@@ -656,9 +656,13 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
     key_to_shift = key1;
   }
 
+  uprintf("SHIFT: key1=%d, key_to_shift=%d %s\n", key1, key_to_shift, down ? "down" : "up");
   // Разбираемся, имеет ли эта клавиша шифт, засунутый в неё
   // Это нужно отдельно от обработки языка, чтобы шифт мог выключаться для обычных клавиш
   Key key2 = shift_process(key_to_shift, down);
+  uprintf("SHIFT: key2=%d %s\n", key2, down ? "down" : "up");
+  
+  uprintf("SHIFT: shift_current=%d, shift_should_be=%d, shift_pressed_count=%d\n", shift_current, shift_should_be, shift_pressed_count);
   if (key2 != NONE_KEY) {
     if (down) {
       register_code(key2);
