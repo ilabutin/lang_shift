@@ -355,7 +355,7 @@ void lang_synchronize(void) {
       	unregister_code(KC_LSHIFT);
         uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
-        wait_ms(TAP_CODE_DELAY)
+        wait_ms(TAP_CODE_DELAY);
         uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
         uprintf("SHIFT: RELEASE\n");
@@ -363,7 +363,7 @@ void lang_synchronize(void) {
       } else {
         uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
-        wait_ms(TAP_CODE_DELAY)
+        wait_ms(TAP_CODE_DELAY);
         uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
       }
