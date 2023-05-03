@@ -127,8 +127,10 @@ void shift_activate(Shift shift) {
 	if (shift_current != shift) {
 		shift_timer = timer_read();
 		if (shift) {
+      uprintf("SHIFT: PRESS\n");
 			register_code(KC_LSHIFT);
 		} else {
+			uprintf("SHIFT: RELEASE\n");
 			unregister_code(KC_LSHIFT);
 		}
 	}
@@ -349,12 +351,18 @@ void lang_synchronize(void) {
     case LANG_CHANGE_CAPS: {
       // Костыль, потому что при нажатии Shift+Caps включается режим Caps, а не переключение языка :facepalm:
       if (shift_current == 1) {
+        uprintf("SHIFT: RELEASE\n");
       	unregister_code(KC_LSHIFT);
+        uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
+        uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
+        uprintf("SHIFT: RELEASE\n");
       	register_code(KC_LSHIFT);
       } else {
+        uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
+        uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
       }
     } break;
@@ -665,8 +673,10 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
   uprintf("SHIFT: shift_current=%d, shift_should_be=%d, shift_pressed_count=%d\n", shift_current, shift_should_be, shift_pressed_count);
   if (key2 != NONE_KEY) {
     if (down) {
+      uprintf("SHIFTHANDLE: PRESS=%d\n",key2);
       register_code(key2);
     } else {
+            uprintf("SHIFTHANDLE: RELEASE=%d\n",key2);
       unregister_code(key2);
     }
     return false;
