@@ -154,8 +154,10 @@ Key shift_process(Key key, bool down) {
 
 	if (new_shift != NONE_SHIFT) {
 		if (down) {
+      uprintf("SPC+ (%d->%d), ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count+1, new_shift, shift_should_be);
 			shift_pressed_count++;
 		} else {
+      uprintf("SPC- (%d->%d), ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count-1, new_shift, shift_should_be);
 			shift_pressed_count--;
 		}
 	}
@@ -166,8 +168,10 @@ Key shift_process(Key key, bool down) {
 void shift_user_timer(void) {
 	// Нужно выключать шифт после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
 	if (shift_pressed_count == 0 && shift_current != shift_should_be && timer_read() - shift_timer >= 100) {
+  uprintf("SHIFT_USER_TIMER BEGIN\n");
 		shift_activate(shift_should_be);
 		shift_timer = timer_read();
+  uprintf("SHIFT_USER_TIMER END\n");
 	}
 }
 
@@ -228,7 +232,9 @@ void shift_once_process(Key key, keyrecord_t* record) {
 
 void shift_once_user_timer(void) {
   if (shift_once_can_disable && shift_once_is_enabled() && timer_read() - shift_once_enabled_time >= 1000) {
+  uprintf("SHIFT_ONCE_USER_TIMER BEGIN\n");
     shift_once_disable();
+  uprintf("SHIFT_ONCE_USER_TIMER END\n");
   }
 }
 
@@ -351,20 +357,14 @@ void lang_synchronize(void) {
     case LANG_CHANGE_CAPS: {
       // Костыль, потому что при нажатии Shift+Caps включается режим Caps, а не переключение языка :facepalm:
       if (shift_current == 1) {
-        uprintf("SHIFT: RELEASE\n");
       	unregister_code(KC_LSHIFT);
-        uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
         wait_ms(TAP_CODE_DELAY);
-        uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
-        uprintf("SHIFT: RELEASE\n");
       	register_code(KC_LSHIFT);
       } else {
-        uprintf("CAPS: PRESS\n");
       	register_code(KC_CAPS);
         wait_ms(TAP_CODE_DELAY);
-        uprintf("CAPS: RELEASE\n");
       	unregister_code(KC_CAPS);
       }
     } break;
@@ -468,7 +468,9 @@ Key lang_process(Key key, bool down) {
 void lang_user_timer(void) {
 	// Нужно выключать язык после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
 	if (lang_pressed_count == 0 && lang_current != lang_should_be && timer_read() - lang_timer >= 100) {
+    uprintf("LANG_USER_TIMER BEGIN\n");
 		lang_activate(lang_should_be);
+    uprintf("LANG_USER_TIMER END\n");
 	}
 }
 
@@ -666,22 +668,21 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
     key_to_shift = key1;
   }
 
-  uprintf("SHIFT: key1=%d, key_to_shift=%d %s\n", key1, key_to_shift, down ? "down" : "up");
   // Разбираемся, имеет ли эта клавиша шифт, засунутый в неё
   // Это нужно отдельно от обработки языка, чтобы шифт мог выключаться для обычных клавиш
   Key key2 = shift_process(key_to_shift, down);
-  uprintf("SHIFT: key2=%d %s\n", key2, down ? "down" : "up");
   
-  uprintf("SHIFT: shift_current=%d, shift_should_be=%d, shift_pressed_count=%d\n", shift_current, shift_should_be, shift_pressed_count);
   if (key2 != NONE_KEY) {
+    uprintf("LANGSHIFT_K2: c=%d, sb=%d, pc=%d, k2=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, key2, down ? "down" : "up");
+
     if (down) {
-      uprintf("SHIFTHANDLE: PRESS=%d\n",key2);
       register_code(key2);
     } else {
-            uprintf("SHIFTHANDLE: RELEASE=%d\n",key2);
       unregister_code(key2);
     }
     return false;
+  } else {
+    uprintf("LANGSHIFT_N: c=%d, sb=%d, pc=%d, k=%d, ks=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, key, key_to_shift, down ? "down" : "up");
   }
 
   if (!lang_shift_process_custom_keycodes(key, record)) {
