@@ -673,7 +673,7 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
   Key key2 = shift_process(key_to_shift, down);
   
   if (key2 != NONE_KEY) {
-    uprintf("LANGSHIFT_K2: c=%d, sb=%d, pc=%d, k2=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, key2, down ? "down" : "up");
+    uprintf("LANGSHIFT_K2: c=%d, sb=%d, pc=%d, k2=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, get_key_name(key2), down ? "down" : "up");
 
     if (down) {
       register_code(key2);
@@ -682,7 +682,7 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
     }
     return false;
   } else {
-    uprintf("LANGSHIFT_N: c=%d, sb=%d, pc=%d, k=%d, ks=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, key, key_to_shift, down ? "down" : "up");
+    uprintf("LANGSHIFT_N: c=%d, sb=%d, pc=%d, k=%d, ks=%d, %s\n", shift_current, shift_should_be, shift_pressed_count, get_key_name(key), get_key_name(key_to_shift), down ? "down" : "up");
   }
 
   if (!lang_shift_process_custom_keycodes(key, record)) {
