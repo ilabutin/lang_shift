@@ -154,10 +154,10 @@ Key shift_process(Key key, bool down) {
 
 	if (new_shift != NONE_SHIFT) {
 		if (down) {
-      uprintf("SPC+ (%d->%d), ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count+1, new_shift, shift_should_be);
+      uprintf("SPC+ (%d->%d), t=%d, ns=%d, sb=%d\n", timer_read(), shift_pressed_count, shift_pressed_count+1, new_shift, shift_should_be);
 			shift_pressed_count++;
 		} else {
-      uprintf("SPC- (%d->%d), ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count-1, new_shift, shift_should_be);
+      uprintf("SPC- (%d->%d), t=%d, ns=%d, sb=%d\n", timer_read(), shift_pressed_count, shift_pressed_count-1, new_shift, shift_should_be);
 			shift_pressed_count--;
 		}
 	}
@@ -673,7 +673,7 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
   Key key2 = shift_process(key_to_shift, down);
   
   if (key2 != NONE_KEY) {
-    uprintf("LANGSHIFT_K2: c=%d, sb=%d, pc=%d, k2=%d(%s), %s\n", shift_current, shift_should_be, shift_pressed_count, key2, get_key_name(key2), down ? "down" : "up");
+    uprintf("LANGSHIFT_K2: t=%d, c=%d, sb=%d, pc=%d, k2=%d(%s), %s\n", timer_read(), shift_current, shift_should_be, shift_pressed_count, key2, get_key_name(key2), down ? "down" : "up");
 
     if (down) {
       register_code(key2);
@@ -682,7 +682,7 @@ bool lang_shift_process_record(Key key, keyrecord_t* record) {
     }
     return false;
   } else {
-    uprintf("LANGSHIFT_N: c=%d, sb=%d, pc=%d, k=%d(%s), ks=%d(%s), %s\n", shift_current, shift_should_be, shift_pressed_count, key, get_key_name(key), key_to_shift, get_key_name(key_to_shift), down ? "down" : "up");
+    uprintf("LANGSHIFT_N: t=%d, c=%d, sb=%d, pc=%d, k=%d(%s), ks=%d(%s), %s\n", timer_read(), shift_current, shift_should_be, shift_pressed_count, key, get_key_name(key), key_to_shift, get_key_name(key_to_shift), down ? "down" : "up");
   }
 
   if (!lang_shift_process_custom_keycodes(key, record)) {
