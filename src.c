@@ -154,10 +154,10 @@ Key shift_process(Key key, bool down) {
 
 	if (new_shift != NONE_SHIFT) {
 		if (down) {
-      uprintf("SPC+ (%d->%d), t=%d, ns=%d, sb=%d\n", timer_read(), shift_pressed_count, shift_pressed_count+1, new_shift, shift_should_be);
+      uprintf("SPC+ (%d->%d), t=%d, ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count+1, timer_read(), new_shift, shift_should_be);
 			shift_pressed_count++;
 		} else {
-      uprintf("SPC- (%d->%d), t=%d, ns=%d, sb=%d\n", timer_read(), shift_pressed_count, shift_pressed_count-1, new_shift, shift_should_be);
+      uprintf("SPC- (%d->%d), t=%d, ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count-1, timer_read(), new_shift, shift_should_be);
 			shift_pressed_count--;
 		}
 	}
