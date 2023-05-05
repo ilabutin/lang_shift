@@ -359,12 +359,10 @@ void lang_synchronize(void) {
       if (shift_current == 1) {
       	unregister_code(KC_LSHIFT);
       	register_code(KC_CAPS);
-        wait_ms(TAP_CODE_DELAY);
       	unregister_code(KC_CAPS);
       	register_code(KC_LSHIFT);
       } else {
       	register_code(KC_CAPS);
-        wait_ms(TAP_CODE_DELAY);
       	unregister_code(KC_CAPS);
       }
     } break;
