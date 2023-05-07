@@ -5,7 +5,9 @@
 Shift shift_should_be = 0;
 Shift shift_current = 0;
 uint32_t shift_timer = 0;
-uint8_t shift_pressed_count = 0;
+int8_t shift_pressed_count = 0;
+
+float error_song_SPC[][2] = SONG(VOICE_CHANGE_SOUND);
 
 Key shift_get_key(Key key) {
   switch (key) {
@@ -159,6 +161,9 @@ Key shift_process(Key key, bool down) {
 		} else {
       uprintf("SPC- (%d->%d), t=%d, ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count-1, timer_read(), new_shift, shift_should_be);
 			shift_pressed_count--;
+      if (shift_pressed_count < 0) {
+        PLAY_SONG(error_song2); 
+      }
 		}
 	}
 
