@@ -162,7 +162,7 @@ Key shift_process(Key key, bool down) {
       uprintf("SPC- (%d->%d), t=%d, ns=%d, sb=%d\n", shift_pressed_count, shift_pressed_count-1, timer_read(), new_shift, shift_should_be);
 			shift_pressed_count--;
       if (shift_pressed_count < 0) {
-        PLAY_SONG(error_song2); 
+        PLAY_SONG(error_song_SPC); 
       }
 		}
 	}
